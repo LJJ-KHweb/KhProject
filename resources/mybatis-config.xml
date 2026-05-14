@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+		<setting name="jdbcTypeForNull" value="NULL"/> 
+	</settings>
+
+	<typeAliases>
+		<typeAlias type="com.kh.web.member.model.dto.MemberDto" alias="member"/>
+		<typeAlias type="com.kh.web.member.model.dto.UpdatePwdDto" alias="password"/>
+		<typeAlias type="com.kh.web.board.model.dto.BoardDto" alias="board"/>
+		<typeAlias type="com.kh.web.common.model.dto.PageInfo" alias="page"/>
+		<typeAlias type="com.kh.web.board.model.dto.AttachmentDto" alias="attachment"/>
+	</typeAliases>
+
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC"/>
+			<dataSource type="UNPOOLED">
+				<property name="driver" value="oracle.jdbc.driver.OracleDriver"/>
+				<property name="url" value="jdbc:oracle:thin:@localhost:1521:XE"/>
+				<property name="username" value="C##JJ"/>
+				<property name="password" value="JJ"/>
+			</dataSource>
+		</environment>
+	</environments>
+  	<mappers>
+  		<mapper resource="/mapper/member-mapper.xml"/>
+  		<mapper resource="/mapper/board-mapper.xml"/>
+  	</mappers>  
+	
+
+</configuration>

@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace ="boardMapper">
+	<select id="selectBoardCount" resultType="_int">
+		SELECT
+				COUNT(*)
+		  FROM
+		  		WEB_BOARD
+		   JOIN
+		  		WEB_MEMBER USING(USER_NO)
+		 WHERE
+		 		WEB_BOARD.STATUS = 'N'
+		   AND
+		  		WEB_MEMBER.USER_ROLE = 'user'
+	</select>
+	
+	<select id="selectBoardList" parameterType="page" resultType="board">
+		SELECT
+				BOARD_NO
+			 ,	USER_NAME
+			 ,	BOARD_TITLE
+			 ,	CREATE_DATE
+			 ,	COUNT
+		 FROM
+		 		WEB_BOARD W
+		 JOIN
+		 		WEB_MEMBER USING(USER_NO)
+		WHERE
+				W.STATUS = 'N'
+		  AND
+		  		USER_ROLE = 'user'
+		ORDER
+		   BY
+		   		CREATE_DATE DESC
+		OFFSET #{offset} ROWS FETCH NEXT #{boardLimit} ROWS ONLY
+	</select>
+	
+	<select id="selectNoticeBoardCount" resultType="_int">
+		SELECT 
+				COUNT(*)
+		  FROM
+		  		WEB_BOARD
+		  JOIN
+		  		WEB_MEMBER USING(USER_NO)
+		 WHERE
+		 		WEB_BOARD.STATUS = 'N'
+		   AND
+		  		WEB_MEMBER.USER_ROLE = 'admin'
+	</select>
+	
+	<select id="selectNoticeBoardList" parameterType="page" resultType="board">
+		SELECT
+				BOARD_NO
+			 ,	USER_NAME
+			 ,	BOARD_TITLE
+			 ,	CREATE_DATE
+			 ,	COUNT
+		  FROM
+		  		WEB_BOARD W
+		  JOIN
+		  		WEB_MEMBER USING(USER_NO)
+		 WHERE
+		 		W.STATUS = 'N'
+		   AND
+		  		WEB_MEMBER.USER_ROLE = 'admin'
+		 ORDER
+		 	BY
+		 		CREATE_DATE DESC
+		OFFSET #{offset} ROWS FETCH NEXT #{boardLimit} ROWS ONLY
+	</select>
+	
+	<!--  order= BEFORE(SQL실행전) AFTER(SQL실행후) 
+		인자로 받은 boardDto에 boardNo를 담아서 리턴해줌 -->
+	<insert id="insertBoard" parameterType="board">
+		<selectKey order="AFTER" resultType="long" keyProperty="boardNo">
+			SELECT MAX(BOARD_NO) FROM WEB_BOARD
+		</selectKey>
+		INSERT
+		  INTO
+		  		WEB_BOARD
+		  		(
+		  		USER_NO
+		  	 ,	BOARD_TITLE
+		  	 ,	BOARD_CONTENT
+		  		)
+		VALUES
+				(
+				#{userNo}
+			 ,	#{boardTitle}
+			 ,	#{boardContent}
+				)
+	</insert>
+	
+	<insert id="insertAttachment" parameterType="attachment">
+		
+		INSERT
+		  INTO
+				WEB_ATTACHMENT
+				(
+				REF_BNO
+			 ,	ORIGIN_NAME
+			 ,	CHANGE_NAME
+			 ,	FILE_PATH
+			 ,	BOARD_TYPE
+			 ,	FILE_LEVEL
+				)
+	   VALUES
+	   			(
+	   			#{refBno}
+	   		 ,	#{originName}
+	   		 ,	#{changeName}
+	   		 ,	#{filePath}
+	   		 ,	#{boardType}
+	   		 ,	#{fileLevel}
+	   			)
+	</insert>
+	
+	<update id="increaseCount" >
+		UPDATE
+				WEB_BOARD
+		   SET
+		   		COUNT = COUNT + 1
+		 WHERE
+		 		BOARD_NO = #{boardNo}
+		   AND
+		   		STATUS = 'N'
+	</update>
+	
+	<select id="selectBoard" resultType="board">
+		SELECT
+				BOARD_NO
+			 ,  USER_NO
+			 ,	USER_NAME
+			 ,	BOARD_TITLE
+			 ,	BOARD_CONTENT
+		  FROM
+		 		WEB_BOARD
+		  JOIN
+		  		WEB_MEMBER USING(USER_NO)
+		 WHERE
+		 		WEB_BOARD.STATUS = 'N'
+		   AND
+		   		BOARD_NO = #{boardNo}
+	</select>
+	
+	<select id="selectAttachment" resultType="attachment">
+		SELECT
+				FILE_NO
+			 ,	ORIGIN_NAME
+			 ,	CHANGE_NAME
+			 ,	FILE_PATH
+		  FROM
+		  		WEB_ATTACHMENT
+		 WHERE
+		 		REF_BNO = #{boardNo}
+	</select>
+	
+	<update id="deleteBoard">
+		UPDATE
+				WEB_BOARD
+		   SET
+		   		STATUS = 'Y'
+		 WHERE
+		 		BOARD_NO = #{boardNo}
+		   AND
+		   		USER_NO = #{userNo}
+		   AND
+		   		(SELECT
+		   				USER_ROLE
+		   		   FROM
+		   				WEB_MEMBER
+		   		  WHERE
+		   		 		USER_NO = #{userNo}) = #{userRole}
+	</update>
+	
+	<delete id="deleteAttachment">
+		DELETE
+		  FROM
+		  		WEB_ATTACHMENT
+		 WHERE
+		 		REF_BNO = #{boardNo}
+	</delete>
+	
+	<select id="selectNoticeBoard" resultType="board">
+		SELECT
+				BOARD_NO
+			 ,	USER_ROLE
+			 ,	USER_NAME
+			 ,	BOARD_TITLE
+			 ,	BOARD_CONTENT
+		  FROM
+		  		WEB_BOARD
+		  JOIN
+		  		WEB_MEMBER USING(USER_NO)
+		 WHERE
+		 		BOARD_NO = #{boardNo}
+		   AND
+		   		WEB_BOARD.STATUS = 'N'
+	</select>
+	
+	<update id="updateBoard">
+		UPDATE
+				WEB_BOARD
+		   SET
+		   		BOARD_TITLE = #{boardTitle}
+		   	 ,	BOARD_CONTENT = #{boardContent}
+		 WHERE
+		 		BOARD_NO = #{boardNo}
+		   AND
+		   		USER_NO = #{userNo}
+	</update>
+	
+	<update id="updateAttachment">
+		UPDATE
+				WEB_ATTACHMENT
+		   SET
+		   		ORIGIN_NAME = #{originName}
+		   	 ,	CHANGE_NAME = #{changeName}
+		   	 ,	FILE_PATH = #{filePath}
+		 WHERE
+		 		FILE_NO = #{fileNo}
+	</update>
+	
+	
+</mapper>
