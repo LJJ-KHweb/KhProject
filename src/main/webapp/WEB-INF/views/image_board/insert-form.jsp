@@ -15,18 +15,18 @@
         <h2 align="center">사진게시글 작성하기</h2>
         <br><br>
 
-        <form action="" 
+        <form action="http://localhost:8088/kh/insert.im" 
             enctype="multipart/form-data"
             method="post" id="insert-form" style="width:800px;margin:auto;">
         
             <div class="form-group">
                 <label for="usr">제목</label>
-                <input type="text" class="form-control" id="usr" name="">
+                <input type="text" class="form-control" id="usr" name="title">
             </div>
 
             <div class="form-group">
                 <label for="comment">내용</label>
-                <textarea class="form-control" name="" rows="15" id="comment" style="resize:none;"></textarea>
+                <textarea class="form-control" name="content" rows="15" id="comment" style="resize:none;"></textarea>
             </div>
 
             <div class="form-group" align="center" >
@@ -52,6 +52,15 @@
             	
             		$('#title-img').click(()=> {
 						$('#file1').click();
+            		})
+            		$('#sub-img1').click(()=> {
+						$('#file2').click();
+            		})
+            		$('#sub-img2').click(()=> {
+						$('#file3').click();
+            		})
+            		$('#sub-img3').click(()=> {
+						$('#file4').click();
             		})
             	})
 
@@ -100,6 +109,15 @@
 							case 4: $('#sub-img3').attr('src', url); break;
 							}
 						
+						}
+					}else{
+						const url = 'https://kh-academy.co.kr/resources/images/main/logo.svg';
+						
+						switch(num){
+						case 1: $('#title-img').attr('src', url); break;
+						case 2: $('#sub-img1').attr('src', url); break;
+						case 3: $('#sub-img2').attr('src', url); break;
+						case 4: $('#sub-img3').attr('src', url); break;
 						}
 					}
             	}

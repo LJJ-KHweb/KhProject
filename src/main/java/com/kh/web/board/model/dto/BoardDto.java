@@ -13,6 +13,15 @@ public class BoardDto {
 	private String status;
 	private String userName;
 	private String userRole;
+	private String src;
+	
+	
+	public String getSrc() {
+		return src;
+	}
+	public void setSrc(String src) {
+		this.src = src;
+	}
 	public BoardDto() {
 		super();
 	}
@@ -33,6 +42,7 @@ public class BoardDto {
 		this.modifyDate = modifyDate;
 		this.count = count;
 		this.status = status;
+		
 	}
 	
 

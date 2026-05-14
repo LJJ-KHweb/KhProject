@@ -66,4 +66,12 @@ public class BoardDao {
 		return sqlSession.update("boardMapper.updateAttachment", at);
 	}
 
+	public int insertImage(SqlSession sqlSession, BoardDto board) {
+		return sqlSession.insert("boardMapper.insertImage", board);
+	}
+
+	public List<BoardDto> selectImageList(SqlSession sqlSession) {
+		return sqlSession.selectList("boardMapper.selectImageList");
+	}
+
 }

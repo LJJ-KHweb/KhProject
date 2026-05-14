@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -58,48 +59,36 @@
 
 			<br>
 
-
-			<div id="1" class="thumbnail" align="center" onclick="">
-				<img src="..." alt="대표이미지">
-				<p>
-					<label>No. 1</label> / <span>제목이다옹</span> <br> <label>조회수</label>
-					: <span>0</span>
-				</p>
-			</div>
-			<div id="1" class="thumbnail" align="center" onclick="">
-				<img src="..." alt="대표이미지">
-				<p>
-					<label>No. 1</label> / <span>제목이다옹</span> <br> <label>조회수</label>
-					: <span>0</span>
-				</p>
-			</div>
-			<div id="1" class="thumbnail" align="center" onclick="">
-				<img src="..." alt="대표이미지">
-				<p>
-					<label>No. 1</label> / <span>제목이다옹</span> <br> <label>조회수</label>
-					: <span>0</span>
-				</p>
-			</div>
-			<div id="1" class="thumbnail" align="center" onclick="">
-				<img src="..." alt="대표이미지">
-				<p>
-					<label>No. 1</label> / <span>제목이다옹</span> <br> <label>조회수</label>
-					: <span>0</span>
-				</p>
-			</div>
-			<div id="1" class="thumbnail" align="center" onclick="">
-				<img src="..." alt="대표이미지">
-				<p>
-					<label>No. 1</label> / <span>제목이다옹</span> <br> <label>조회수</label>
-					: <span>0</span>
-				</p>
-			</div>
-
+			<c:choose>
+				<c:when test="${ empty boards }">
+					등록된 게시글이 존재하지 않습니다. <br>
+				</c:when>
+				<c:otherwise>
+					<c:forEach var="board" items="${boards}" >
+						<div id="${ board.boardNo }" class="thumbnail" align="center" onclick="detail(this.id);">
+						<img src="${ board.src }" alt="대표이미지">
+						<p>
+							<label>No. ${ board.boardNo }</label> / <span>${ board.boardTitle }</span> <br> <label>등록일</label>
+							: <span>${ board.createDate }</span>
+						</p>
+					</div>	
+					
+					</c:forEach>
+				</c:otherwise>
+			</c:choose>
+			<script>
+				function defail(num){
+		
+					location.href=`http://locathost:8088/kh/detail.im?boardNo=\${num}`};
+				}
+			
+			</script>
+			
+			
 		</div>
-
-
-
 	</div>
+
+
 
 	<jsp:include page="../include/footer.jsp" />
 

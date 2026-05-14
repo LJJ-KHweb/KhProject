@@ -155,8 +155,9 @@
 		  		WEB_ATTACHMENT
 		 WHERE
 		 		REF_BNO = #{boardNo}
+		   AND
+		   		BOARD_TYPE = 'C'
 	</select>
-	
 	<update id="deleteBoard">
 		UPDATE
 				WEB_BOARD
@@ -223,5 +224,47 @@
 		 		FILE_NO = #{fileNo}
 	</update>
 	
+	<insert id="insertImage">
+		<selectKey resultType="Long" keyProperty="boardNo" order="BEFORE">
+			SELECT SEQ_IMAGE.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT
+		  INTO
+		  		WEB_IMAGE_BOARD
+		  		(
+		  		BOARD_NO
+		  	 ,	BOARD_TITLE
+		  	 ,	BOARD_CONTENT
+		  	 ,	BOARD_WRITER
+		  		)
+		VALUES
+				(
+				#{boardNo}
+			 ,	#{boardTitle}
+			 ,	#{boardContent}
+			 ,	#{userNo}
+				)
+	</insert>
+	<!--  ,	FILE_PATH || '/' || CHANGE_NAME "src" 연결연산자를 사용해서 두개의 컬럼의 값을 하나의 컬럼으로 가져옴 -->
+	<select id="selectImageList" resultType="board">
+		SELECT
+				BOARD_NO
+			 ,	BOARD_TITLE
+			 ,  WEB_IMAGE_BOARD.CREATE_DATE
+			 ,	FILE_PATH || '/' || CHANGE_NAME "src"
+		  FROM
+		  		WEB_IMAGE_BOARD
+		  JOIN
+		  		WEB_ATTACHMENT ON (BOARD_NO = REF_BNO) 
+		 WHERE
+		 		BOARD_TYPE = 'I'
+		   AND
+		   		STATUS = 'N'
+		   AND
+		   		FILE_LEVEL = 1
+		 ORDER
+		 	BY
+		 		BOARD_NO DESC
+	</select>
 	
 </mapper>
