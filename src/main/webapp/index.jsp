@@ -33,5 +33,8 @@
 		문제가 발생하면 캡쳐를해서 정리를 하자
 		tailwindcss -> bootstrap같은 사이트
 	 -->
+	 <!--  예고편 -->
+	 <a href="insert.notice">노티스 인서트</a>
+	 <a href="select notice">노티스 셀렉트</a>
 </body>
 </html>

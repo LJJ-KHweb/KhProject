@@ -77,9 +77,8 @@
 				</c:otherwise>
 			</c:choose>
 			<script>
-				function defail(num){
-		
-					location.href=`http://locathost:8088/kh/detail.im?boardNo=\${num}`};
+				function detail(num){
+					location.href=`http://localhost:8088/kh/detail.im?boardNo=\${num}`;
 				}
 			
 			</script>

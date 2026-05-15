@@ -15,6 +15,7 @@
 		<typeAlias type="com.kh.web.board.model.dto.BoardDto" alias="board"/>
 		<typeAlias type="com.kh.web.common.model.dto.PageInfo" alias="page"/>
 		<typeAlias type="com.kh.web.board.model.dto.AttachmentDto" alias="attachment"/>
+		<typeAlias type="com.kh.web.board.model.dto.ImageResponse" alias="imageResponse"/>
 	</typeAliases>
 
 	<environments default="development">
